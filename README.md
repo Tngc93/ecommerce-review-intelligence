@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>An enterprise-grade, brand-agnostic AI analytics engine that converts raw customer reviews, return logs, physical damage photos, and multi-channel sentiment telemetry into quantified financial leakage metrics, root-cause defect diagnostics, CAD anatomy heatmaps, and production-ready A/B testing hypotheses with Gherkin acceptance criteria.</strong>
+  <strong>A brand-agnostic AI analytics prototype that converts raw customer reviews, return logs, physical damage photos, and multi-channel sentiment telemetry into quantified financial leakage metrics, root-cause defect diagnostics, CAD anatomy heatmaps, and production-ready A/B testing hypotheses with Gherkin acceptance criteria.</strong>
 </p>
 
 <p align="center">
@@ -15,9 +15,8 @@
   <a href="https://ai.google.dev/"><img src="https://img.shields.io/badge/Gemini%201.5%20Flash-Vision%20Multimodal-orange?style=for-the-badge&logo=google" alt="Gemini Vision" /></a>
   <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS 3.4" /></a>
   <a href="https://www.prisma.io/"><img src="https://img.shields.io/badge/Prisma-6.4%20ORM-2D3748?style=for-the-badge&logo=prisma" alt="Prisma ORM" /></a>
-  <a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-48%2F48%20Passing%20(100%25)-emerald?style=for-the-badge&logo=vitest" alt="Vitest Passing" /></a>
-  <a href="#-security-audit--penetration-testing"><img src="https://img.shields.io/badge/Penetration%20Test-25%2F25%20Passed%20(100%25)-purple?style=for-the-badge" alt="Security Penetration Passed" /></a>
-  <a href="https://github.com/Tngc93/ecommerce-growth-intelligence-engine/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="MIT License" /></a>
+  <a href="https://github.com/Tngc93/ecommerce-review-intelligence/actions/workflows/ci.yml"><img src="https://github.com/Tngc93/ecommerce-review-intelligence/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/Tngc93/ecommerce-review-intelligence/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge" alt="MIT License" /></a>
 </p>
 
 ---
@@ -32,7 +31,7 @@
 - [6. Multi-Store Architecture & Role-Based Access Control (RBAC)](#6-multi-store-architecture--role-based-access-control-rbac)
 - [7. Hybrid Live Scraper Engine](#7-hybrid-live-scraper-engine)
 - [8. Financial Margin Leakage Modeling](#8-financial-margin-leakage-modeling)
-- [9. Security Hardening & Penetration Testing](#9-security-hardening--penetration-testing)
+- [9. Security Hardening](#9-security-hardening)
 - [10. Testing & Quality Assurance](#10-testing--quality-assurance)
 - [11. Quick Start & Local Setup](#11-quick-start--local-setup)
 - [12. License & Author](#12-license--author)
@@ -186,11 +185,13 @@ ReviewIQ supports multi-brand holding operations with isolated stores and person
 
 ## 7. Hybrid Live Scraper Engine
 
-The built-in scraper (`/import` & `/api/scrape`) fetches live product reviews directly from public e-commerce URLs:
+The built-in importer (`/import` & `/api/scrape`) reads product reviews from a product URL you provide:
 
 - **Supported Channels:** Amazon (`amazon.com`, `amazon.com.tr`), Hepsiburada (`hepsiburada.com`), and Trendyol (`trendyol.com`).
-- **Resilient Fallback:** Automatically switches from direct DOM parsing to domain-aware heuristic extraction when blocked by anti-bot walls.
+- **Sample fallback:** When a page cannot be read, the importer inserts a small set of **synthetic sample reviews** generated from the product name and category, so the demo flow keeps working. These are not real customer reviews; do not use them for decisions.
 - **Instant ABSA Pipeline:** Incoming reviews are immediately parsed for sentiment, aspect categories, and financial risk.
+
+> **Use responsibly.** Marketplaces such as Amazon, Hepsiburada and Trendyol restrict automated collection in their terms of service. Use this importer only for pages you are allowed to read this way, and prefer official seller APIs or exports of your own store data in real use.
 
 ---
 
@@ -208,12 +209,12 @@ $$\text{Monthly Revenue Leakage} = (\text{Monthly Sales} \times \text{Return Rat
 
 ---
 
-## 9. Security Hardening & Penetration Testing
+## 9. Security Hardening
 
-ReviewIQ implements **defense-in-depth enterprise security** verified via our automated penetration suite:
+ReviewIQ applies the defensive controls below. They were checked with a local audit script during development; that script is not part of this repository yet. The SSRF, protocol, rate-limit and input-validation rules are also covered by `src/__tests__/security.test.ts`, which runs in CI.
 
 ```
-🛡️ REVIEW-IQ PENETRATION & SECURITY AUDIT RESULTS: 25 / 25 PASSED (100%)
+REVIEWIQ SECURITY CONTROLS
 ========================================================================
 1. Server-Side Request Forgery (SSRF) Protection:
    ✅ /api/scrape blocks Loopback (localhost, 127.0.0.1, ::1) -> 403 Forbidden
@@ -245,23 +246,13 @@ ReviewIQ implements **defense-in-depth enterprise security** verified via our au
 
 ## 10. Testing & Quality Assurance
 
-ReviewIQ maintains **100% test pass rates** across unit, functional, security, and production build pipelines:
-
-### Automated Test Matrix
-- **Unit Tests (Vitest 3.2):** **48 / 48 Tests Passed (100%)** across 11 test suites (`vision.test.ts`, `security.test.ts`, `alerts.test.ts`, `analytics.test.ts`, `scraper.test.ts`, etc.).
-- **Security Penetration Tests:** **25 / 25 Checks Passed (100%)**.
-- **Functional QA Smoke Tests:** **18 / 18 Endpoints & Pages Passed (100%)**.
-- **Next.js 15 Production Build:** **17 / 17 Routes Compiled (0 Errors)**.
+- **Unit tests (Vitest):** 11 suites in `src/__tests__/` (vision, security, alerts, analytics, scraper and more). They run on every push and pull request via GitHub Actions, together with a production build.
+- **End-to-end tests (Playwright):** `e2e/dashboard.spec.ts`, run locally with `npm run test:e2e`.
 
 ```bash
-# Run Vitest unit tests
-npm test
-
-# Run Penetration Audit
-python scratch/run_penetration_test.py
-
-# Run Functional Smoke QA
-python scratch/run_functional_qa.py
+npm test            # unit tests
+npm run build       # production build
+npm run test:e2e    # Playwright end-to-end tests
 ```
 
 ---
@@ -275,8 +266,8 @@ python scratch/run_functional_qa.py
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Tngc93/ecommerce-growth-intelligence-engine.git
-cd "ecommerce-growth-intelligence-engine"
+git clone https://github.com/Tngc93/ecommerce-review-intelligence.git
+cd ecommerce-review-intelligence
 ```
 
 ### 2. Install Dependencies
@@ -308,4 +299,4 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser:
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
-Architected and developed with passion by **[Berk_ (Tngc93)](https://github.com/Tngc93)**.
+Built by **[Berk Arcak](https://github.com/Tngc93)**.
