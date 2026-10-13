@@ -1,5 +1,7 @@
 # CLAUDE.md - Developer Guidelines
 
+@AGENTS.md
+
 ## Project Overview
 **E-Commerce Growth & Review Intelligence Engine**
 An AI-native platform designed to diagnose e-commerce returns, extract aspect-based review sentiments, and generate actionable product hypotheses for PMs.
